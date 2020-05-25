@@ -1,0 +1,10 @@
+{
+  "name": "server-full",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+	"start": "node index.js"
+  },
+  "author": "null-undefined <thiaguinhols144@gmail.com>",
+  "license": "MIT"
+}
