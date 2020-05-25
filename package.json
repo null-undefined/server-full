@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-	"test": "mocha \"tests/*.js\""
+    "test": "mocha \"tests/*.js\""
   },
   "author": "null-undefined <thiaguinhols144@gmail.com>",
   "license": "MIT",
@@ -20,7 +20,10 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "rotating-file-stream": "^2.1.1"
   }
 }
