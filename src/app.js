@@ -5,6 +5,8 @@ require('dotenv').config()
 const path = require('path')
 
 const express = require('express')
+const { buildSchema } = require('graphql')
+const graphqlHTTP = require('express-graphql')
 const cors = require('cors')
 const morgan = require('morgan')
 const rfs = require('rotating-file-stream')
@@ -24,6 +26,22 @@ if (app.get('env') === 'development') {
 	})
 	app.use(morgan('combined', { stream: accessLogStream }))
 }
+
+app.use('/graphql', graphqlHTTP({
+	schema: buildSchema(`
+		type RootQuery {
+			hello: String
+		}
+		
+		schema {
+			query: RootQuery
+		}
+	`),
+	rootValue: {
+		hello: () => 'Welcome'
+	},
+	graphiql: true
+}))
 
 app.use('*', async (req, res, next) => {
 	res.status(404)
