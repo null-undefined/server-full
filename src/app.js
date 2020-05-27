@@ -27,6 +27,7 @@ if (app.get('env') === 'development') {
 	app.use(morgan('combined', { stream: accessLogStream }))
 }
 
+
 app.use('/graphql', graphqlHTTP({
 	schema: buildSchema(`
 		type RootQuery {
