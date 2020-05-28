@@ -5,11 +5,16 @@ require('dotenv').config()
 const path = require('path')
 
 const express = require('express')
-const { buildSchema } = require('graphql')
 const graphqlHTTP = require('express-graphql')
 const cors = require('cors')
 const morgan = require('morgan')
 const rfs = require('rotating-file-stream')
+const mongoose = require('mongoose')
+
+const logger = require('./logger')
+const databaseConfig = require('../config/database')
+const authentication = require('./middlewares/authentication')
+const { schema, root } = require('./schema')
 
 const app = express()
 app.set('port', process.env.PORT || 5000)
@@ -27,20 +32,14 @@ if (app.get('env') === 'development') {
 	app.use(morgan('combined', { stream: accessLogStream }))
 }
 
+mongoose.connect(databaseConfig.database, databaseConfig.options)
+	.then(() => console.log('connected database'))
+const { connection } = mongoose
+connection.on('error', logger.error)
 
 app.use('/graphql', graphqlHTTP({
-	schema: buildSchema(`
-		type RootQuery {
-			hello: String
-		}
-		
-		schema {
-			query: RootQuery
-		}
-	`),
-	rootValue: {
-		hello: () => 'Welcome'
-	},
+	schema: schema,
+	rootValue: root,
 	graphiql: true
 }))
 
